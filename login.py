@@ -1,13 +1,42 @@
 import getpass
-import time
+import click  # Importing click for CLI commands
 
-def authenticate(username, password):
-    with open('credentials.txt', 'r') as file:
-        for line in file:
-            stored_username, stored_password = line.strip().split(',')
-            if username == stored_username and password == stored_password:
-                return True
-    return False
+# Define your OS commands as Click commands
+@click.group()
+def os_cli():
+    pass
+
+@os_cli.command()
+def files():
+    """View files in the OS."""
+    click.echo("Listing files in the OS:")
+    # Add code here to list files in the OS directory
+
+@os_cli.command()
+def open_file():
+    """Open a file."""
+    filename = click.prompt("Enter the name of the file to open")
+    # Add code here to open the specified file
+
+@os_cli.command()
+def processes():
+    """View running processes."""
+    click.echo("Listing running processes:")
+    # Add code here to list running processes
+
+@os_cli.command()
+def execute_process():
+    """Execute a process."""
+    process_name = click.prompt("Enter the name of the process to execute")
+    # Add code here to execute the specified process
+
+@os_cli.command()
+def logout():
+    """Logout of the OS."""
+    click.echo("Logging out...")
+    # Add code here to logout
+
+# Authenticate function remains the same
 
 def sign_up():
     username = input("Enter a new username: ")
@@ -15,12 +44,6 @@ def sign_up():
     with open('credentials.txt', 'a') as file:
         file.write(f"{username},{password}\n")
     print("Sign up successful!")
-
-def generate_os_link(username, password):
-    # Replace 'github_pages_site_link' with the actual link to your GitHub Pages site
-    github_pages_site_link = 'https://Hank0670devdev.github.io/'
-    os_link = f"{github_pages_site_link}usr?={username}&pass?={password}"
-    return os_link
 
 def main():
     while True:
@@ -35,10 +58,8 @@ def main():
             password = getpass.getpass("password: ")
             if authenticate(username, password):
                 print("Login successful!")
-                os_link = generate_os_link(username, password)
-                print("Here is the link to the OS:")
-                print(os_link)
-                break
+                os_cli()  # Launch the OS CLI after successful login
+                break  # Exit the loop after logout
             else:
                 print("Invalid username or password.")
         else:
@@ -46,4 +67,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    time.sleep(50000)
