@@ -9,11 +9,17 @@ def authenticate(username, password):
     return False
 
 def sign_up():
-    username = input("username? ")
-    password = getpass.getpass("password: ")
+    username = input("Enter a new username: ")
+    password = getpass.getpass("Enter a new password: ")
     with open('credentials.txt', 'a') as file:
         file.write(f"{username},{password}\n")
     print("Sign up successful!")
+
+def generate_os_link(username, password):
+    # Replace 'github_pages_site_link' with the actual link to your GitHub Pages site
+    github_pages_site_link = 'https://username.github.io/html-sites/'
+    os_link = f"{github_pages_site_link}usr?={username}&pass?={password}"
+    return os_link
 
 def main():
     while True:
@@ -28,6 +34,9 @@ def main():
             password = getpass.getpass("password: ")
             if authenticate(username, password):
                 print("Login successful!")
+                os_link = generate_os_link(username, password)
+                print("Here is the link to the OS:")
+                print(os_link)
                 break
             else:
                 print("Invalid username or password.")
