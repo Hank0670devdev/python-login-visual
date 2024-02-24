@@ -8,15 +8,31 @@ def authenticate(username, password):
                 return True
     return False
 
-def main():
+def sign_up():
     username = input("username? ")
-    print('Logging in with: <'+username+'>')
     password = getpass.getpass("password: ")
-    
-    if authenticate(username, password):
-        print("Login successful!")
-    else:
-        print("Invalid username or password.")
-        main()
+    with open('credentials.txt', 'a') as file:
+        file.write(f"{username},{password}\n")
+    print("Sign up successful!")
+
+def main():
+    while True:
+        print("<1> Sign Up!")
+        print("<2> Log In")
+        choice = input(">>> ")
+        if choice == "1":
+            sign_up()
+        elif choice == "2":
+            username = input("username? ")
+            print('Logging in with: <'+username+'>')
+            password = getpass.getpass("password: ")
+            if authenticate(username, password):
+                print("Login successful!")
+                break
+            else:
+                print("Invalid username or password.")
+        else:
+            print("Invalid choice. Please choose again.")
+
 if __name__ == "__main__":
     main()
