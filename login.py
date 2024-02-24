@@ -1,4 +1,5 @@
 import getpass
+import time
 
 def authenticate(username, password):
     with open('credentials.txt', 'r') as file:
@@ -17,7 +18,7 @@ def sign_up():
 
 def generate_os_link(username, password):
     # Replace 'github_pages_site_link' with the actual link to your GitHub Pages site
-    github_pages_site_link = 'https://username.github.io/html-sites/'
+    github_pages_site_link = 'https://Hank0670devdev.github.io/'
     os_link = f"{github_pages_site_link}usr?={username}&pass?={password}"
     return os_link
 
@@ -45,3 +46,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    time.sleep(50000)
