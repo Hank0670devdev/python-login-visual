@@ -1,4 +1,55 @@
-from os_module import OS  # Importing the OS class from the os_module module
+import getpass
+import os
+import subprocess
+
+def authenticate(username, password):
+    with open('credentials.txt', 'r') as file:
+        for line in file:
+            stored_username, stored_password = line.strip().split(',')
+            if username == stored_username and password == stored_password:
+                return True
+    return False
+
+def sign_up():
+    username = input("Enter a new username: ")
+    password = getpass.getpass("Enter a new password: ")
+    with open('credentials.txt', 'a') as file:
+        file.write(f"{username},{password}\n")
+    print("Sign up successful!")
+
+def view_files():
+    """View files in the OS directory."""
+    files = os.listdir('.')
+    print("Files in the OS directory:")
+    for file in files:
+        print(file)
+
+def open_file(filename):
+    """Open a specific file."""
+    if os.path.exists(filename):
+        with open(filename, 'r') as file:
+            print(f"Contents of '{filename}':")
+            print(file.read())
+    else:
+        print(f"Error: File '{filename}' does not exist.")
+
+def list_processes():
+    """List running processes."""
+    print("Running processes:")
+    for proc in psutil.process_iter():
+        try:
+            # Fetch process details
+            pinfo = proc.as_dict(attrs=['pid', 'name'])
+            print(pinfo)
+        except psutil.NoSuchProcess:
+            pass
+
+def execute_process(command):
+    """Execute a specific process."""
+    try:
+        subprocess.run(command, shell=True, check=True)
+    except subprocess.CalledProcessError:
+        print(f"Error: Failed to execute command '{command}'")
 
 def main():
     while True:
@@ -13,7 +64,6 @@ def main():
             password = getpass.getpass("password: ")
             if authenticate(username, password):
                 print("Login successful!")
-                os_instance = OS()  # Creating an instance of the OS class
                 while True:
                     print("\n<1> View Files")
                     print("<2> Open File")
@@ -22,15 +72,15 @@ def main():
                     print("<5> Logout")
                     choice = input(">>> ")
                     if choice == "1":
-                        os_instance.view_files()
+                        view_files()
                     elif choice == "2":
                         filename = input("Enter the name of the file to open: ")
-                        os_instance.open_file(filename)
+                        open_file(filename)
                     elif choice == "3":
-                        os_instance.list_processes()
+                        list_processes()
                     elif choice == "4":
                         command = input("Enter the command to execute: ")
-                        os_instance.execute_process(command)
+                        execute_process(command)
                     elif choice == "5":
                         print("Logging out...")
                         break
